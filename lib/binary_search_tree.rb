@@ -2,7 +2,7 @@
 
 ## The building block for any binary search tree
 class Node
-  attr_writer :left, :right
+  attr_accessor :left, :right
 
   def initialize(data)
     @data = data
@@ -13,15 +13,29 @@ end
 
 ## The faithful recreation of a binary search tree by user Profiremu23
 class Tree
-  def array_to_bst(array, starting_point = array.find_index(array.first), end_point = array.find_index(array.last))
+  attr_reader :root
+
+  def initialize
+    @root = nil
+  end
+
+  def build_tree(array, starting_point = array.find_index(array.first), end_point = array.find_index(array.last))
     return nil if array.class != Array || starting_point > end_point
+    array.sort!
+    array.uniq!
 
     middle_point = (starting_point + end_point) / 2
 
     node = Node.new(array[middle_point])
-    node.left = array_to_bst(array, starting_point, middle_point - 1)
-    node.right = array_to_bst(array, middle_point + 1, end_point)
+    node.left = build_tree(array, starting_point, middle_point - 1)
+    node.right = build_tree(array, middle_point + 1, end_point)
 
-    p node
+    @root = node
+  end
+
+  def pretty_print(node = @root, prefix = '', is_left: true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '|   ' : '    '}", false) if node.right unless node.nil?
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}" unless node.nil?
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '|   '}", true) if node.left unless node.nil?
   end
 end

@@ -3,5 +3,6 @@
 require './lib/binary_search_tree'
 
 tree = Tree.new
-arr = [12, 45, 31, 69, 42]
-p tree.array_to_bst(arr)
+arr = [12, 69, 45, 31, 69, 42]
+p tree.build_tree(arr)
+p tree.pretty_print(node = @root, prefix = '', is_left: true)
