@@ -3,6 +3,7 @@
 ## The building block for any binary search tree
 class Node
   attr_accessor :left, :right
+  attr_reader :data
 
   def initialize(data)
     @data = data
@@ -33,9 +34,11 @@ class Tree
     @root = node
   end
 
-  def pretty_print(node = @root, prefix = '', is_left: true)
-    pretty_print(node.right, "#{prefix}#{is_left ? '|   ' : '    '}", false) if node.right unless node.nil?
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}" unless node.nil?
-    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '|   '}", true) if node.left unless node.nil?
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    unless node.nil?
+      pretty_print(node.right, "#{prefix}#{is_left ? '|   ' : '    '}", false)
+      puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+      pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '|   '}", true)
+    end
   end
 end
