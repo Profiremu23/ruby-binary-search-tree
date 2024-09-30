@@ -41,4 +41,50 @@ class Tree
       pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '|   '}", true)
     end
   end
+
+  def insert(value, root = @root)
+    return Node.new(value) if root.nil?
+
+    return root if root.data == value
+
+    if value < root.data
+      root.left = insert(value, root.left)
+    else
+      root.right = insert(value, root.right)
+    end
+
+    root
+  end
+
+  def delete(value, root = @root)
+    return root if root.nil?
+
+    if root.data > value
+      root.left = delete(value, root.left)
+    elsif value > root.data
+      root.right = delete(value, root.right)
+    else
+      return root.right if root.left.nil?
+      return root.left if root.right.nil?
+
+      successor = Node.new(root)
+      root.data = successor.data
+      root.right = delete(successor.data, root.right)
+    end
+
+    root
+  end
+
+  def find(value, root = @root)
+    return root if root.nil?
+
+    if root.data > value
+      root.left = find(value, root.left)
+    else
+      root.right = find(value, root.right)
+    end
+
+    p root if root.data == value
+    nil
+  end
 end
